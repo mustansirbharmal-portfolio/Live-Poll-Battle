@@ -1,0 +1,21 @@
+// This script is used by Vercel to build only the frontend part of the application
+const { execSync } = require('child_process');
+
+// Check if we're in a Vercel environment
+const isVercel = process.env.VERCEL === '1';
+
+if (isVercel) {
+  console.log('🔨 Building frontend for Vercel deployment...');
+  
+  // Run the Vite build command for the frontend only
+  try {
+    execSync('vite build', { stdio: 'inherit' });
+    console.log('✅ Frontend build successful!');
+  } catch (error) {
+    console.error('❌ Frontend build failed:', error);
+    process.exit(1);
+  }
+} else {
+  console.log('Not in Vercel environment, use normal build process');
+  process.exit(0);
+}
