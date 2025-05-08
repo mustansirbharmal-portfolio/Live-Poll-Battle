@@ -8,8 +8,21 @@ export function useWebSocket() {
   
   useEffect(() => {
     // Connect to WebSocket server
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    // For production: Connect to backend deployed on Render
+    // For development: Connect to local backend
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
+    
+    let wsUrl;
+    if (BACKEND_URL && import.meta.env.PROD) {
+      // In production with backend URL set
+      const protocol = BACKEND_URL.startsWith('https') ? 'wss:' : 'ws:';
+      const host = BACKEND_URL.replace('https://', '').replace('http://', '');
+      wsUrl = `${protocol}//${host}/ws`;
+    } else {
+      // In development or no backend URL (uses same origin)
+      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      wsUrl = `${protocol}//${window.location.host}/ws`;
+    }
     
     const ws = new WebSocket(wsUrl);
     webSocketRef.current = ws;
