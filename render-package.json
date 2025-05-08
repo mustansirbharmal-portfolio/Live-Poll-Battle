@@ -1,0 +1,8 @@
+{
+  "name": "live-poll-battle",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "NODE_ENV=production node dist/server.js"
+  }
+}
